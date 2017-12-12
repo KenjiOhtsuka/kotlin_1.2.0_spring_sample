@@ -1,8 +1,10 @@
 package com.example.myapp.presentation.layout
 
+import com.example.myapp.presentation.core.col
+import com.example.myapp.presentation.core.row
 import kotlinx.html.*
 import kotlinx.html.stream.appendHTML
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import org.springframework.ui.ModelMap
 import java.io.StringWriter
 
 object LayoutView {
@@ -13,7 +15,7 @@ object LayoutView {
     }()
 
     fun default(
-            redirectAttributes: RedirectAttributes,
+            modelMap: ModelMap,
             pageTitle: String = "", block: DIV.() -> Unit
     ): String =
             StringWriter().
@@ -38,11 +40,15 @@ object LayoutView {
                         }
                     }
 
-                    if (redirectAttributes.containsAttribute("success")) {
+                    if (modelMap.containsAttribute("success")) {
                         div("container") {
-                            div("alert alert-success") {
-                                role = "alert"
-                                +(redirectAttributes.flashAttributes.getValue("success") as String)
+                            row {
+                                col {
+                                    div("alert alert-success") {
+                                        role = "alert"
+                                        +(modelMap["success"] as String)
+                                    }
+                                }
                             }
                         }
                     }
